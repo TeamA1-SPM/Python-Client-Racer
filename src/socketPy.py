@@ -10,8 +10,13 @@ def best_lap_times(py, java):
         py = 0.0
     if java == None:
         java = 0.0
-    game_window.window_surface.blit(py, (450, 15))
-    game_window.window_surface.blit(java, (800, 15))
+
+    game_window.fastestRound = str(py)[:-14]
+    game_window.fastestRoundFont = game_window.font.render(game_window.fastestRound, 1, (255, 255, 255))
+    game_window.window_surface.blit(game_window.fastestRoundFont, (450, 15))
+    game_window.enemyFastestRound = str(java)[:-14]
+    game_window.enemyFastestRoundFont = game_window.font.render(game_window.enemyFastestRound, 1, (255, 255, 255))
+    game_window.window_surface.blit(game_window.enemyFastestRoundFont, (800, 15))
 
 # 1. Gegner Playername 2. meine schnellste Runde 3. gegnerische schnellste Runde 4. Boolean true = gewonnen
 @sio.event
