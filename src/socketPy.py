@@ -1,22 +1,28 @@
+import pygame
 import socketio
 import game_window
 sio = socketio.Client()
 
+#font = pygame.font.Font('freesansbold.ttf', 20)
 @sio.event
-def best_lap_times(py, java):
-    print("Your lap: ", py)
-    print("Enemy play: ", java)
-    if py == None:
-        py = 0.0
-    if java == None:
-        java = 0.0
+def best_lap_times(enemy, me):
+    if me == None:
+        me = 0.0
+    if enemy == None:
+        enemy = 0.0
 
-    game_window.fastestRound = str(py)[:-14]
-    game_window.fastestRoundFont = game_window.font.render(game_window.fastestRound, 1, (255, 255, 255))
-    game_window.window_surface.blit(game_window.fastestRoundFont, (450, 15))
-    game_window.enemyFastestRound = str(java)[:-14]
-    game_window.enemyFastestRoundFont = game_window.font.render(game_window.enemyFastestRound, 1, (255, 255, 255))
-    game_window.window_surface.blit(game_window.enemyFastestRoundFont, (800, 15))
+    print("Your lap: ", me)
+    print("Enemy play: ", enemy)
+    font = pygame.font.Font('freesansbold.ttf', 20)
+
+    game_window.fastestRoundME = str(me)[:-13]
+
+    #game_window.fastestRoundME = font.render(fastestRound, 1, (255, 255, 255))
+    game_window.fastestRoundEnemy = str(enemy)[:-13]
+    #game_window.fastestRoundEnemy = font.render(enemyFastestRound, 1, (255, 255, 255))
+
+
+
 
 # 1. Gegner Playername 2. meine schnellste Runde 3. gegnerische schnellste Runde 4. Boolean true = gewonnen
 @sio.event
@@ -25,7 +31,7 @@ def end_game(enemy, fastest_lap, enemy_lap, boolean):
 
 @sio.event
 def connect():
-    sio.emit('login', ("lewin", "123456"))
+    sio.emit('login', ("timo", "123456"))
     sio.emit('find_lobby')
     print("connected to server")
 

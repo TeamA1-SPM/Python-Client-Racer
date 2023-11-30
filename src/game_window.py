@@ -7,6 +7,7 @@ import Line
 import socketio
 import socketPy
 from socketPy import sio
+
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 768
 
@@ -14,13 +15,18 @@ pos = 0
 playerX = 0
 playerY = 1500
 window_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+#server Feedback
 
+fastestRoundME = None
+fastestRoundEnemy = None
 
 class GameLoop():
 
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Racing Pseudo 3D")
+        #global font
+        #self.font = pygame.font.Font('freesansbold.ttf', 20)
         #self.window_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
         self.last_time = time.time()
@@ -238,6 +244,7 @@ class GameLoop():
 
                 )
 
+
             # Balken oben darstellen
             balken = pygame.image.load("images/background/ObereSpielanzeige.PNG").convert_alpha()
             balken = pygame.transform.scale(balken, (WINDOW_WIDTH, 50))
@@ -262,6 +269,12 @@ class GameLoop():
             window_surface.blit(elapsed_time_text, (70, 15))
             window_surface.blit(lastRoundTimePrint, (250, 15))
             #window_surface.blit(fastestRoundTimePrint, (450, 15))
+            fastestRoundMEFont = font.render(fastestRoundME, 1, (255, 255, 255))
+            window_surface.blit(fastestRoundMEFont, (450, 15))
+            fastestRoundEnemyFont = font.render(fastestRoundEnemy, 1, (255, 255, 255))
+            window_surface.blit(fastestRoundEnemyFont, (625, 15))
+
+
 
             # Runden
             currentRround = str(round)
