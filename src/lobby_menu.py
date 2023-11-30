@@ -1,8 +1,5 @@
 import pygame, sys
-
 import game_window
-
-
 from button import Button
 from user_and_pw import TextInput
 
@@ -25,7 +22,6 @@ pygame.display.set_caption("Menu")
 BG = pygame.image.load("images/lobby/LobbyBackground.png")
 username = TextInput(x=170, y=250, font=get_font(50, 3))
 password = TextInput(x=490, y=250, font=get_font(50, 3), pw=True)
-
 
 
 input_boxes = [username, password]
@@ -59,6 +55,7 @@ def options():
 
 
 def main_menu():
+    safeUserAndPW = True
     while True:
         SCREEN.blit(BG, (0, 0))
 
@@ -86,7 +83,7 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    if username.completeText and password.completeText != "":
+                    if username.completeText and password.completeText:
                         game_window.GameLoop.run(game_window.GameLoop())
                         print(username.text)
                         print("geben sie erst einen Usernamen und ein Password ein")
@@ -98,18 +95,22 @@ def main_menu():
             for box in input_boxes:
                 box.handle_event(event)
         for box in input_boxes:
-            if username.completeText and password.completeText != "":
-                box.visible = False
-                box.active = False
-                # username.completeText und password.completeText kann ab hier eingespeichert werden.
-
-            box.update()
-            box.draw(SCREEN)
-
-
+            if safeUserAndPW:
+                if username.completeText and password.completeText:
+                    print(box.text)
+                    box.visible = False
+                    box.active = False
+                    # username.Text und password.Text kann ab hier eingespeichert werden.
+                else:
+                    box.update()
+                    box.draw(SCREEN)
+        if username.completeText and password.completeText:
+            safeUserAndPW = False
 
         pygame.display.update()
 
 
+
 if __name__ == "__main__":
-    main_menu()
+    #main_menu()
+    game_window.GameLoop.run(game_window.GameLoop())
