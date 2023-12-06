@@ -3,7 +3,7 @@ import socketio
 import game_window
 sio = socketio.Client()
 
-#font = pygame.font.Font('freesansbold.ttf', 20)
+
 @sio.event
 def best_lap_times(enemy, me):
     if me == None:
@@ -13,13 +13,11 @@ def best_lap_times(enemy, me):
 
     print("Your lap: ", me)
     print("Enemy play: ", enemy)
-    font = pygame.font.Font('freesansbold.ttf', 20)
 
+    # Übergabe der schnellsten Zeiten von sich selbst und dem Gegner
     game_window.fastestRoundME = str(me)[:-13]
-
-    #game_window.fastestRoundME = font.render(fastestRound, 1, (255, 255, 255))
     game_window.fastestRoundEnemy = str(enemy)[:-13]
-    #game_window.fastestRoundEnemy = font.render(enemyFastestRound, 1, (255, 255, 255))
+
 
 
 
@@ -31,7 +29,7 @@ def end_game(enemy, fastest_lap, enemy_lap, boolean):
 
 @sio.event
 def connect():
-    sio.emit('login', ("timo", "123456"))
+    sio.emit('login', ("lewin", "123456"))
     sio.emit('find_lobby')
     print("connected to server")
 

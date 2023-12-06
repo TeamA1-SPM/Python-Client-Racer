@@ -7,6 +7,7 @@ import Line
 import socketio
 import socketPy
 from socketPy import sio
+import gameOverlay
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 768
@@ -20,14 +21,22 @@ window_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 fastestRoundME = None
 fastestRoundEnemy = None
 
+# Overlay
+balkenOben = None
+
+# Zeiten
+lastRoundTime = None
+round_start_time = None
+aktuelleZeit = None
+
+# Runden
+round = 0
+
 class GameLoop():
 
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Racing Pseudo 3D")
-        #global font
-        #self.font = pygame.font.Font('freesansbold.ttf', 20)
-        #self.window_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
         self.last_time = time.time()
         self.dt = 0
@@ -59,11 +68,13 @@ class GameLoop():
 
     def run(self):
 
-        round = 1
-        lastRoundTime = 0
-        fastestRoundTime = 0
 
-        round_start_time = time.time()
+        #round += 1
+        #lastRoundTime = 0
+        #round_start_time = time.time()
+
+        gameOverlay.currentRound(1)
+        gameOverlay.roundStart(1)
         font = pygame.font.Font('freesansbold.ttf', 20)
         # create road lines for each segment
         lines: List[Line.Line] = []
@@ -154,9 +165,11 @@ class GameLoop():
             # I-Abfrage für die schnellste Runde letzte Runde und die Rundenanzahl
             pos += speed
             if pos >= N * Line.segL:
-                round += 1
-                lastRoundTime = time.time() - round_start_time
-                round_start_time = time.time()
+                gameOverlay.currentRound(1)
+                #round += 1
+                gameOverlay.roundStart(0)
+                #lastRoundTime = time.time() - round_start_time
+                #round_start_time = time.time()
                 # I-Abfrage ob die jetzige Runde schneller war als die letzte
                 sio.emit("lap_time", lastRoundTime)
 
@@ -164,8 +177,7 @@ class GameLoop():
                     sio.emit("finished_race")
                     #TODO: Hier soll der Bildschirm angezeit werden
 
-                #if fastestRoundTime == 0 or fastestRoundTime > lastRoundTime:
-                    #fastestRoundTime = lastRoundTime
+
 
 
             self.prev_height = self.player_height  # Speichern Sie die Höhe des vorherigen Segments
@@ -246,9 +258,10 @@ class GameLoop():
 
 
             # Balken oben darstellen
-            balken = pygame.image.load("images/background/ObereSpielanzeige.PNG").convert_alpha()
-            balken = pygame.transform.scale(balken, (WINDOW_WIDTH, 50))
-            window_surface.blit(balken, (0, 0))
+            #balken = pygame.image.load("images/background/ObereSpielanzeige.PNG").convert_alpha()
+            #balken = pygame.transform.scale(balken, (WINDOW_WIDTH, 50))
+            gameOverlay.gameOverlayPrint()
+            #window_surface.blit(balkenOben, (0, 0))
 
             # Draw player with image
             self.player_image = pygame.transform.scale(self.player_image, (200, 150))  # Passe die Größe an
@@ -256,19 +269,22 @@ class GameLoop():
             window_surface.blit(self.player_image, player_rect)
 
             # Zeit angabe
-            current_time = time.time()
-            elapsed_time = current_time - round_start_time
-            roundTime = str(elapsed_time)
-            roundTime = roundTime[:-14]
-            lastRound = str(lastRoundTime)[:-13]
-            #fastestRound = str(fastestRoundTime)[:-13]
+            #current_time = time.time()
+            #elapsed_time = current_time - round_start_time
+            #roundTime = str(elapsed_time)
+            #roundTime = roundTime[:-14]
+            #lastRound = str(lastRoundTime)[:-13]
 
-            #fastestRoundTimePrint = font.render(fastestRound, 1, (255, 255, 255))
-            lastRoundTimePrint = font.render(lastRound, 1, (255, 255, 255))
-            elapsed_time_text = font.render(roundTime, 1, (255, 255, 255))
-            window_surface.blit(elapsed_time_text, (70, 15))
-            window_surface.blit(lastRoundTimePrint, (250, 15))
-            #window_surface.blit(fastestRoundTimePrint, (450, 15))
+
+
+            #lastRoundTimePrint = font.render(lastRound, 1, (255, 255, 255))
+            #elapsed_time_text = font.render(roundTime, 1, (255, 255, 255))
+            #window_surface.blit(elapsed_time_text, (70, 15))
+            #window_surface.blit(lastRoundTimePrint, (250, 15))
+            gameOverlay.printCurrentAndLastTime()
+
+
+
             fastestRoundMEFont = font.render(fastestRoundME, 1, (255, 255, 255))
             window_surface.blit(fastestRoundMEFont, (450, 15))
             fastestRoundEnemyFont = font.render(fastestRoundEnemy, 1, (255, 255, 255))
@@ -277,9 +293,10 @@ class GameLoop():
 
 
             # Runden
-            currentRround = str(round)
-            actuelRound = font.render(currentRround, 1, (255, 255, 255))
-            window_surface.blit(actuelRound, (950, 15))
+            gameOverlay.currentRound(0)
+            #currentRround = str(round)
+            #actuelRound = font.render(currentRround, 1, (255, 255, 255))
+            #window_surface.blit(actuelRound, (950, 15))
             pygame.display.update()
 
             # draw sprites

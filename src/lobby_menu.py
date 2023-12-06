@@ -16,7 +16,7 @@ def get_font(size, i=1):  # Returns Press-Start-2P in the desired size
 pygame.init()
 
 
-SCREEN = pygame.display.set_mode((980, 760))
+SCREEN = pygame.display.set_mode((1300, 1200))
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("images/lobby/LobbyBackground.png")
@@ -31,7 +31,7 @@ def options():
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
-        SCREEN.fill("white")
+        SCREEN.blit(BG, (0, 0))
 
         OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(490, 260))
@@ -52,6 +52,138 @@ def options():
                     main_menu()
 
         pygame.display.update()
+def findLobby():
+    while True:
+        REGISTER_MOUSE_POS = pygame.mouse.get_pos()
+        SCREEN.blit(BG, (0, 0))
+        LOGIN_TEXT = get_font(45).render("This is the REGISTER screen.", True, "Black")
+        LOGIN_RECT = LOGIN_TEXT.get_rect(center=(490, 160))
+        SCREEN.blit(LOGIN_TEXT, LOGIN_RECT)
+
+
+        FINDLOBBY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
+                             text_input="FINDLOBBY", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        BESTENLISTE_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
+                                  text_input="BEST.LIst", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        LOGOUT_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 700),
+                             text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+
+        for button in [FINDLOBBY_BUTTON, BESTENLISTE_BUTTON, LOGOUT_BUTTON]:
+            button.changeColor(REGISTER_MOUSE_POS)
+            button.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if LOGOUT_BUTTON.checkForInput(REGISTER_MOUSE_POS):
+                    main_menu()
+        pygame.display.update()
+
+def login ():
+    safeUserAndPW = True
+    while True:
+        LOGIN_MOUSE_POS = pygame.mouse.get_pos()
+        SCREEN.blit(BG, (0, 0))
+        LOGIN_TEXT = get_font(45).render("This is the LOGIN screen.", True, "Black")
+        LOGIN_RECT = LOGIN_TEXT.get_rect(center=(490, 160))
+        SCREEN.blit(LOGIN_TEXT, LOGIN_RECT)
+
+
+        PLAY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
+                             text_input="PLAY", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        OPTIONS_BACK = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
+                              text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+
+        for button in [PLAY_BUTTON, OPTIONS_BACK]:
+            button.changeColor(LOGIN_MOUSE_POS)
+            button.update(SCREEN)
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(LOGIN_MOUSE_POS):
+
+                    if username.completeText and password.completeText:
+                        game_window.GameLoop.run(game_window.GameLoop())
+                        print(username.text)
+                        print("geben sie erst einen Usernamen und ein Password ein")
+                    findLobby()
+                if OPTIONS_BACK.checkForInput(LOGIN_MOUSE_POS):
+                    main_menu()
+                    for box in input_boxes:
+                        box.handle_event(event)
+            for box in input_boxes:
+                if safeUserAndPW:
+                    if username.completeText and password.completeText:
+                        print(box.text)
+                        box.visible = False
+                        box.active = False
+                        # username.Text und password.Text kann ab hier eingespeichert werden.
+                    else:
+                        box.update()
+                        box.draw(SCREEN)
+            if username.completeText and password.completeText:
+                safeUserAndPW = False
+
+            pygame.display.update()
+def register():
+    safeUserAndPW = True
+    while True:
+        REGISTER_MOUSE_POS = pygame.mouse.get_pos()
+        SCREEN.blit(BG, (0, 0))
+        LOGIN_TEXT = get_font(45).render("This is the REGISTER screen.", True, "Black")
+        LOGIN_RECT = LOGIN_TEXT.get_rect(center=(490, 160))
+        SCREEN.blit(LOGIN_TEXT, LOGIN_RECT)
+
+
+        PLAY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
+                             text_input="PLAY", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        OPTIONS_BACK = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
+                              text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+
+        for button in [PLAY_BUTTON, OPTIONS_BACK]:
+            button.changeColor(REGISTER_MOUSE_POS)
+            button.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(REGISTER_MOUSE_POS):
+                    if username.completeText and password.completeText:
+                        game_window.GameLoop.run(game_window.GameLoop())
+                        print(username.text)
+                        print("geben sie erst einen Usernamen und ein Password ein")
+                if OPTIONS_BACK.checkForInput(REGISTER_MOUSE_POS):
+                    main_menu()
+                    for box in input_boxes:
+                        box.handle_event(event)
+            for box in input_boxes:
+                if safeUserAndPW:
+                    if username.completeText and password.completeText:
+                        print(box.text)
+                        box.visible = False
+                        box.active = False
+                        # username.Text und password.Text kann ab hier eingespeichert werden.
+                    else:
+                        box.update()
+                        box.draw(SCREEN)
+            if username.completeText and password.completeText:
+                safeUserAndPW = False
+
+            pygame.display.update()
+
+
 
 
 def main_menu():
@@ -64,16 +196,22 @@ def main_menu():
         MENU_TEXT = get_font(75).render("lobby", True, (0, 0, 0))
         MENU_RECT = MENU_TEXT.get_rect(center=(490, 100))
 
+        LOGIN_BUTTON =Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 800),
+                             text_input="LOGIN", font=get_font(75), base_color=(0,0,0), hovering_color="White")
+        REGISTER_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 900),
+                             text_input="REGISTER", font=get_font(75), base_color=(0,0,0), hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 700),
+                             text_input = "QUIT", font = get_font(75), base_color = (0, 0, 0), hovering_color = "White")
+
         PLAY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
                              text_input="PLAY", font=get_font(75), base_color=(0,0,0), hovering_color="White")
         OPTIONS_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
                                 text_input="OPTIONS", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 700),
-                             text_input="QUIT", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON, LOGIN_BUTTON, REGISTER_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
 
@@ -82,35 +220,39 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    if username.completeText and password.completeText:
-                        game_window.GameLoop.run(game_window.GameLoop())
-                        print(username.text)
-                        print("geben sie erst einen Usernamen und ein Password ein")
+                #if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    #if username.completeText and password.completeText:
+                        #game_window.GameLoop.run(game_window.GameLoop())
+                        #print(username.text)
+                        #print("geben sie erst einen Usernamen und ein Password ein")
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
-            for box in input_boxes:
-                box.handle_event(event)
-        for box in input_boxes:
-            if safeUserAndPW:
-                if username.completeText and password.completeText:
-                    print(box.text)
-                    box.visible = False
-                    box.active = False
+                if LOGIN_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    login()
+                if REGISTER_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    register()
+            #for box in input_boxes:
+                #box.handle_event(event)
+        #for box in input_boxes:
+            #if safeUserAndPW:
+                #if username.completeText and password.completeText:
+                    #print(box.text)
+                    #box.visible = False
+                    #box.active = False
                     # username.Text und password.Text kann ab hier eingespeichert werden.
-                else:
-                    box.update()
-                    box.draw(SCREEN)
-        if username.completeText and password.completeText:
-            safeUserAndPW = False
+                #else:
+                    #box.update()
+                   # box.draw(SCREEN)
+       # if username.completeText and password.completeText:
+            #safeUserAndPW = False
 
         pygame.display.update()
 
 
 
 if __name__ == "__main__":
-    #main_menu()
-    game_window.GameLoop.run(game_window.GameLoop())
+    main_menu()
+    #game_window.GameLoop.run(game_window.GameLoop())
