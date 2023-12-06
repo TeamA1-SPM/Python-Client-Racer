@@ -15,7 +15,6 @@ def get_font(size, i=1):  # Returns Press-Start-2P in the desired size
 
 pygame.init()
 
-
 SCREEN = pygame.display.set_mode((1300, 1200))
 pygame.display.set_caption("Menu")
 
@@ -81,6 +80,8 @@ def findLobby():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if LOGOUT_BUTTON.checkForInput(REGISTER_MOUSE_POS):
                     main_menu()
+                if FINDLOBBY_BUTTON.checkForInput(REGISTER_MOUSE_POS):
+                    game_window.GameLoop.run(game_window.GameLoop())
         pygame.display.update()
 
 def login ():
