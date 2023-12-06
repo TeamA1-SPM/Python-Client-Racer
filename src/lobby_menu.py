@@ -15,7 +15,7 @@ def get_font(size, i=1):  # Returns Press-Start-2P in the desired size
 
 pygame.init()
 
-SCREEN = pygame.display.set_mode((1300, 1200))
+SCREEN = pygame.display.set_mode((1300, 1200)) # 980, 760
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("images/lobby/LobbyBackground.png")
@@ -81,6 +81,7 @@ def findLobby():
                 if LOGOUT_BUTTON.checkForInput(REGISTER_MOUSE_POS):
                     main_menu()
                 if FINDLOBBY_BUTTON.checkForInput(REGISTER_MOUSE_POS):
+                    pygame.display.set_mode((980, 760))
                     game_window.GameLoop.run(game_window.GameLoop())
         pygame.display.update()
 
@@ -111,30 +112,29 @@ def login ():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(LOGIN_MOUSE_POS):
-
                     if username.completeText and password.completeText:
-                        game_window.GameLoop.run(game_window.GameLoop())
                         print(username.text)
                         print("geben sie erst einen Usernamen und ein Password ein")
-                    findLobby()
+                        findLobby()
+                        #TODO: Server muss abfragen ob das PW/Benutzer passt
                 if OPTIONS_BACK.checkForInput(LOGIN_MOUSE_POS):
                     main_menu()
-                    for box in input_boxes:
-                        box.handle_event(event)
             for box in input_boxes:
-                if safeUserAndPW:
-                    if username.completeText and password.completeText:
-                        print(box.text)
-                        box.visible = False
-                        box.active = False
-                        # username.Text und password.Text kann ab hier eingespeichert werden.
-                    else:
-                        box.update()
-                        box.draw(SCREEN)
-            if username.completeText and password.completeText:
-                safeUserAndPW = False
+                box.handle_event(event)
+        for box in input_boxes:
+            if safeUserAndPW:
+                if username.completeText and password.completeText:
+                    print(box.text)
+                    box.visible = False
+                    box.active = False
+                    # username.Text und password.Text kann ab hier eingespeichert werden.
+                else:
+                    box.update()
+                    box.draw(SCREEN)
+        if username.completeText and password.completeText:
+            safeUserAndPW = False
 
-            pygame.display.update()
+        pygame.display.update()
 def register():
     safeUserAndPW = True
     while True:
@@ -162,29 +162,43 @@ def register():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(REGISTER_MOUSE_POS):
                     if username.completeText and password.completeText:
-                        game_window.GameLoop.run(game_window.GameLoop())
                         print(username.text)
                         print("geben sie erst einen Usernamen und ein Password ein")
+                        findLobby()
+                        # TODO: Server muss abfragen ob das PW/Benutzer passt
                 if OPTIONS_BACK.checkForInput(REGISTER_MOUSE_POS):
                     main_menu()
-                    for box in input_boxes:
-                        box.handle_event(event)
             for box in input_boxes:
-                if safeUserAndPW:
-                    if username.completeText and password.completeText:
-                        print(box.text)
-                        box.visible = False
-                        box.active = False
-                        # username.Text und password.Text kann ab hier eingespeichert werden.
-                    else:
-                        box.update()
-                        box.draw(SCREEN)
-            if username.completeText and password.completeText:
-                safeUserAndPW = False
+                box.handle_event(event)
+        for box in input_boxes:
+            if safeUserAndPW:
+                if username.completeText and password.completeText:
+                    print(box.text)
+                    box.visible = False
+                    box.active = False
+                    # username.Text und password.Text kann ab hier eingespeichert werden.
+                else:
+                    box.update()
+                    box.draw(SCREEN)
+        if username.completeText and password.completeText:
+            safeUserAndPW = False
 
-            pygame.display.update()
+        pygame.display.update()
 
+def endScreen(enemyName, myFastestLap, enemyFastestLap, winOrLoss):
+    while True:
+        REGISTER_MOUSE_POS = pygame.mouse.get_pos()
+        SCREEN.blit(BG, (0, 0))
+        LOGIN_TEXT = get_font(45).render("This is the REGISTER screen.", True, "Black")
+        LOGIN_RECT = LOGIN_TEXT.get_rect(center=(490, 160))
+        SCREEN.blit(LOGIN_TEXT, LOGIN_RECT)
 
+        enemyLapBalken = pygame.image.load("rectInput.png").convert_alpha()
+        myLapBalken =  pygame.image.load("rectInput.png").convert_alpha()
+        SCREEN.blit(enemyLapBalken, (0,0))
+        SCREEN.blit(myLapBalken, (0, 100))
+
+        pygame.display.update()
 
 
 def main_menu():

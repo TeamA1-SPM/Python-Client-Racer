@@ -258,10 +258,7 @@ class GameLoop():
 
 
             # Balken oben darstellen
-            #balken = pygame.image.load("images/background/ObereSpielanzeige.PNG").convert_alpha()
-            #balken = pygame.transform.scale(balken, (WINDOW_WIDTH, 50))
             gameOverlay.gameOverlayPrint()
-            #window_surface.blit(balkenOben, (0, 0))
 
             # Draw player with image
             self.player_image = pygame.transform.scale(self.player_image, (200, 150))  # Passe die Größe an
@@ -269,34 +266,16 @@ class GameLoop():
             window_surface.blit(self.player_image, player_rect)
 
             # Zeit angabe
-            #current_time = time.time()
-            #elapsed_time = current_time - round_start_time
-            #roundTime = str(elapsed_time)
-            #roundTime = roundTime[:-14]
-            #lastRound = str(lastRoundTime)[:-13]
-
-
-
-            #lastRoundTimePrint = font.render(lastRound, 1, (255, 255, 255))
-            #elapsed_time_text = font.render(roundTime, 1, (255, 255, 255))
-            #window_surface.blit(elapsed_time_text, (70, 15))
-            #window_surface.blit(lastRoundTimePrint, (250, 15))
             gameOverlay.printCurrentAndLastTime()
-
-
 
             fastestRoundMEFont = font.render(fastestRoundME, 1, (255, 255, 255))
             window_surface.blit(fastestRoundMEFont, (450, 15))
             fastestRoundEnemyFont = font.render(fastestRoundEnemy, 1, (255, 255, 255))
             window_surface.blit(fastestRoundEnemyFont, (625, 15))
 
-
-
             # Runden
             gameOverlay.currentRound(0)
-            #currentRround = str(round)
-            #actuelRound = font.render(currentRround, 1, (255, 255, 255))
-            #window_surface.blit(actuelRound, (950, 15))
+
             pygame.display.update()
 
             # draw sprites

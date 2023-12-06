@@ -2,6 +2,7 @@ import pygame
 import socketio
 import game_window
 sio = socketio.Client()
+from lobby_menu import endScreen
 
 
 @sio.event
@@ -25,7 +26,7 @@ def best_lap_times(enemy, me):
 # 1. Gegner Playername 2. meine schnellste Runde 3. gegnerische schnellste Runde 4. Boolean true = gewonnen
 @sio.event
 def end_game(enemy, fastest_lap, enemy_lap, boolean):
-    pass
+    endScreen(enemy, fastest_lap, enemy_lap, boolean)
 
 @sio.event
 def connect():
