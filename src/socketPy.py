@@ -21,8 +21,6 @@ def best_lap_times(enemy, me):
 
 
 
-
-
 # 1. Gegner Playername 2. meine schnellste Runde 3. gegnerische schnellste Runde 4. Boolean true = gewonnen
 @sio.event
 def end_game(enemy, fastest_lap, enemy_lap, boolean):
@@ -30,7 +28,7 @@ def end_game(enemy, fastest_lap, enemy_lap, boolean):
 
 @sio.event
 def connect():
-    sio.emit('login', ("lewin", "123456"))
+    sio.emit('login', ("Timo", "123456"))
     sio.emit('find_lobby')
     print("connected to server")
 

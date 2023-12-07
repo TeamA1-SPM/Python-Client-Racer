@@ -173,7 +173,7 @@ class GameLoop():
                 # I-Abfrage ob die jetzige Runde schneller war als die letzte
                 sio.emit("lap_time", lastRoundTime)
 
-                if round >3:
+                if round > 3:
                     sio.emit("finished_race")
                     #TODO: Hier soll der Bildschirm angezeit werden
 

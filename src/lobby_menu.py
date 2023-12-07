@@ -15,7 +15,7 @@ def get_font(size, i=1):  # Returns Press-Start-2P in the desired size
 
 pygame.init()
 
-SCREEN = pygame.display.set_mode((1300, 1200)) # 980, 760
+SCREEN = pygame.display.set_mode((980, 760)) # 980, 760
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("images/lobby/LobbyBackground.png")
@@ -81,7 +81,6 @@ def findLobby():
                 if LOGOUT_BUTTON.checkForInput(REGISTER_MOUSE_POS):
                     main_menu()
                 if FINDLOBBY_BUTTON.checkForInput(REGISTER_MOUSE_POS):
-                    pygame.display.set_mode((980, 760))
                     game_window.GameLoop.run(game_window.GameLoop())
         pygame.display.update()
 
@@ -189,14 +188,36 @@ def endScreen(enemyName, myFastestLap, enemyFastestLap, winOrLoss):
     while True:
         REGISTER_MOUSE_POS = pygame.mouse.get_pos()
         SCREEN.blit(BG, (0, 0))
-        LOGIN_TEXT = get_font(45).render("This is the REGISTER screen.", True, "Black")
-        LOGIN_RECT = LOGIN_TEXT.get_rect(center=(490, 160))
-        SCREEN.blit(LOGIN_TEXT, LOGIN_RECT)
+        END_TEXT = get_font(45).render("This is the END screen.", True, "Black")
+        END_RECT = END_TEXT.get_rect(center=(490, 160))
+        SCREEN.blit(END_TEXT, END_RECT)
 
         enemyLapBalken = pygame.image.load("rectInput.png").convert_alpha()
-        myLapBalken =  pygame.image.load("rectInput.png").convert_alpha()
-        SCREEN.blit(enemyLapBalken, (0,0))
+        myLapBalken = pygame.image.load("rectInput.png").convert_alpha()
+
+        SCREEN.blit(enemyLapBalken, (0, 0))
         SCREEN.blit(myLapBalken, (0, 100))
+
+        QUIT_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 300),
+                             text_input="QUIT", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        QUIT_BUTTON.changeColor(REGISTER_MOUSE_POS)
+        QUIT_BUTTON.update(SCREEN)
+        if winOrLoss:
+            WIN_TEXT = get_font(45).render("Du hast gewonnen")
+            Win_RECT = END_TEXT.get_rect(center=(490, 160))
+        else:
+            LOSS_TEXT = get_font(45).render(enemyName + "hat gewonnen")
+            LOSS_RECT = END_TEXT.get_rect(center=(490, 160))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if QUIT_BUTTON.checkForInput(REGISTER_MOUSE_POS):
+                    pygame.quit()
+                    sys.exit()
 
         pygame.display.update()
 
@@ -211,22 +232,27 @@ def main_menu():
         MENU_TEXT = get_font(75).render("lobby", True, (0, 0, 0))
         MENU_RECT = MENU_TEXT.get_rect(center=(490, 100))
 
-        LOGIN_BUTTON =Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 800),
+        #PLAY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
+                             #text_input="PLAY", font=get_font(75), base_color=(0,0,0), hovering_color="White")
+
+        #OPTIONS_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
+                                #text_input="OPTIONS", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
+        LOGIN_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
                              text_input="LOGIN", font=get_font(75), base_color=(0,0,0), hovering_color="White")
-        REGISTER_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 900),
+
+        REGISTER_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
                              text_input="REGISTER", font=get_font(75), base_color=(0,0,0), hovering_color="White")
+
         QUIT_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 700),
                              text_input = "QUIT", font = get_font(75), base_color = (0, 0, 0), hovering_color = "White")
 
-        PLAY_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 400),
-                             text_input="PLAY", font=get_font(75), base_color=(0,0,0), hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("images/lobby/rectButton.png"), pos=(490, 550),
-                                text_input="OPTIONS", font=get_font(75), base_color=(0, 0, 0), hovering_color="White")
+
 
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON, LOGIN_BUTTON, REGISTER_BUTTON]:
+        for button in [QUIT_BUTTON, LOGIN_BUTTON, REGISTER_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
 
@@ -240,8 +266,8 @@ def main_menu():
                         #game_window.GameLoop.run(game_window.GameLoop())
                         #print(username.text)
                         #print("geben sie erst einen Usernamen und ein Password ein")
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
+                #if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    #options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
