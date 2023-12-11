@@ -1,4 +1,3 @@
-import pygame
 import socketio
 import game_window
 sio = socketio.Client()
@@ -32,6 +31,6 @@ def connect():
     sio.emit('find_lobby')
     print("connected to server")
 
-sio.connect("http://localhost:3000")
+sio.connect("https://racing-server.onrender.com/")
 
 

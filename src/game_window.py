@@ -1,12 +1,9 @@
-import math
 import sys
 import time
 from typing import List
 import pygame
 import Line
-import socketio
-import socketPy
-from socketPy import sio
+#from socketPy import sio
 import gameOverlay
 
 WINDOW_WIDTH = 1024
