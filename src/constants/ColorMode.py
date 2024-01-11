@@ -1,0 +1,6 @@
+
+# Farben
+LIGHT = "LIGHT"
+DARK = "DARK"
+START = "START"
+FINISH = "FINISH"

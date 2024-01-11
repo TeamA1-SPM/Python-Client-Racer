@@ -1,0 +1,54 @@
+from enum import Enum
+
+
+# Die Namen der einzelnen Bilder, die geladen werden
+
+class SpriteName(Enum):
+    BILLBOARD01 = 1
+    BILLBOARD02 = 2
+    BILLBOARD03 = 3
+    BILLBOARD04 = 4
+    BILLBOARD05 = 5
+    BILLBOARD06 = 6
+    BILLBOARD07 = 7
+    BILLBOARD08 = 8
+    BILLBOARD09 = 9
+
+    PALM_TREE = 10
+    CACTUS = 11
+    TREE1 = 12
+    TREE2 = 13
+    DEAD_TREE1 = 14
+    DEAD_TREE2 = 15
+    STUMP = 16
+    BUSH1 = 17
+    BUSH2 = 18
+    BOULDER1 = 19
+    BOULDER2 = 20
+    BOULDER3 = 21
+    COLUMN = 22
+
+    SEMI = 23
+    TRUCK = 24
+    CAR01 = 25
+    CAR02 = 26
+    CAR03 = 27
+    CAR04 = 28
+
+    PLAYER_UPHILL_LEFT = 29
+    PLAYER_UPHILL_STRAIGHT = 30
+    PLAYER_UPHILL_RIGHT = 31
+    PLAYER_LEFT = 32
+    PLAYER_STRAIGHT = 33
+    PLAYER_RIGHT = 34
+
+    COUNTDOWN_THREE = 35
+    COUNTDOWN_TWO = 36
+    COUNTDOWN_ONE = 37
+
+    PAUSE_MENU = 38
+    RESULT = 39
+    PRESS_ENTER = 40
+    WAITING = 41
+    WIN = 42
+    LOSE = 43
